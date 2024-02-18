@@ -10,6 +10,5 @@
     "additionalDelayInCalculationOperationSeconds": 20,
     "mainLoopDelaySeconds": 2,
     "auxiliaryLoopDelaySeconds": 3,
-    "sendIntermediateRPNExpressionToManager": true,
-    "DeleteFinishedTasksAfterTransferringToManager": true
+    "sendIntermediateRPNExpressionToManager": true
 }

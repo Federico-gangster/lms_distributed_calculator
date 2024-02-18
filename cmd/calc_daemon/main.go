@@ -33,19 +33,19 @@ const (
 )
 
 type Config struct {
-	DaemonEndpoint                                string `json:"calcdaemonEndpoint"`
-	UpdateConfigEndpoint                          string `json:"updateConfigEndpoint"`
-	ServerAddress                                 string `json:"serverAddress"`
-	ManagerEndpoint                               string `json:"managerEndpoint"`
-	ManagerServerAddress                          string `json:"managerServerAddress"`
-	MaxLenghtCalcQueue                            int    `json:"maxLenghtCalcQueue"`
-	ProcessingDelaySeconds                        int    `json:"processingDelaySeconds"`
-	MaxGoroutinesInCalcProcess                    int    `json:"maxGoroutinesInCalcProcess"`
-	AdditionalDelayInCalculationOperationSeconds  int    `json:"additionalDelayInCalculationOperationSeconds"`
-	MainLoopDelaySeconds                          int    `json:"mainLoopDelaySeconds"`
-	AuxiliaryLoopDelaySeconds                     int    `json:"auxiliaryLoopDelaySeconds"`
-	SendIntermediateRPNExpressionToManager        bool   `json:"sendIntermediateRPNExpressionToManager"`
-	DeleteFinishedTasksAfterTransferringToManager bool   `json:"deleteFinishedTasksAfterTransferringToManager"`
+	DaemonEndpoint                               string `json:"calcdaemonEndpoint"`
+	UpdateConfigEndpoint                         string `json:"updateConfigEndpoint"`
+	ServerAddress                                string `json:"serverAddress"`
+	ManagerEndpoint                              string `json:"managerEndpoint"`
+	ManagerServerAddress                         string `json:"managerServerAddress"`
+	MaxLenghtCalcQueue                           int    `json:"maxLenghtCalcQueue"`
+	ProcessingDelaySeconds                       int    `json:"processingDelaySeconds"`
+	MaxGoroutinesInCalcProcess                   int    `json:"maxGoroutinesInCalcProcess"`
+	AdditionalDelayInCalculationOperationSeconds int    `json:"additionalDelayInCalculationOperationSeconds"`
+	MainLoopDelaySeconds                         int    `json:"mainLoopDelaySeconds"`
+	AuxiliaryLoopDelaySeconds                    int    `json:"auxiliaryLoopDelaySeconds"`
+	SendIntermediateRPNExpressionToManager       bool   `json:"sendIntermediateRPNExpressionToManager"`
+	// DeleteFinishedTasksAfterTransferringToManager bool   `json:"deleteFinishedTasksAfterTransferringToManager"`
 }
 
 type Task struct {
@@ -648,11 +648,11 @@ func processTasksInQueue(config Config) {
 				log.Printf("Error sending task information to Manager: %v", err)
 			} else {
 				//Успешно отправили
-				if config.DeleteFinishedTasksAfterTransferringToManager {
-					calcQueue.Delete(taskID)
-					taskStatus.Delete(taskID)
-					log.Printf("Task %d information sent to Manager successfully", taskID)
-				}
+				// if config.DeleteFinishedTasksAfterTransferringToManager {
+				calcQueue.Delete(taskID)
+				taskStatus.Delete(taskID)
+				log.Printf("Task %d information sent to Manager successfully", taskID)
+				// }
 			}
 		}
 
@@ -681,14 +681,14 @@ type SettingsUpdateRequest struct {
 }
 
 type SettingsStruct struct {
-	MaxLenghtCalcQueue                            int  `json:"maxLenghtCalcQueue"`
-	ProcessingDelaySeconds                        int  `json:"processingDelaySeconds"`
-	MaxGoroutinesInCalcProcess                    int  `json:"maxGoroutinesInCalcProcess"`
-	AdditionalDelayInCalculationOperationSeconds  int  `json:"additionalDelayInCalculationOperationSeconds"`
-	MainLoopDelaySeconds                          int  `json:"mainLoopDelaySeconds"`
-	AuxiliaryLoopDelaySeconds                     int  `json:"auxiliaryLoopDelaySeconds"`
-	SendIntermediateRPNExpressionToManager        bool `json:"sendIntermediateRPNExpressionToManager"`
-	DeleteFinishedTasksAfterTransferringToManager bool `json:"deleteFinishedTasksAfterTransferringToManager"`
+	MaxLenghtCalcQueue                           int  `json:"maxLenghtCalcQueue"`
+	ProcessingDelaySeconds                       int  `json:"processingDelaySeconds"`
+	MaxGoroutinesInCalcProcess                   int  `json:"maxGoroutinesInCalcProcess"`
+	AdditionalDelayInCalculationOperationSeconds int  `json:"additionalDelayInCalculationOperationSeconds"`
+	MainLoopDelaySeconds                         int  `json:"mainLoopDelaySeconds"`
+	AuxiliaryLoopDelaySeconds                    int  `json:"auxiliaryLoopDelaySeconds"`
+	SendIntermediateRPNExpressionToManager       bool `json:"sendIntermediateRPNExpressionToManager"`
+	// DeleteFinishedTasksAfterTransferringToManager bool `json:"deleteFinishedTasksAfterTransferringToManager"`
 }
 
 func updateConfig(w http.ResponseWriter, r *http.Request, config *Config) {
@@ -718,7 +718,7 @@ func updateConfig(w http.ResponseWriter, r *http.Request, config *Config) {
 		config.MainLoopDelaySeconds = settings.MainLoopDelaySeconds
 		config.AuxiliaryLoopDelaySeconds = settings.AuxiliaryLoopDelaySeconds
 		config.SendIntermediateRPNExpressionToManager = settings.SendIntermediateRPNExpressionToManager
-		config.DeleteFinishedTasksAfterTransferringToManager = settings.DeleteFinishedTasksAfterTransferringToManager
+		// config.DeleteFinishedTasksAfterTransferringToManager = settings.DeleteFinishedTasksAfterTransferringToManager
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
