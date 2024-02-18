@@ -616,6 +616,10 @@ curl -X POST -H "Content-Type: application/json" -d '{
 
 <a name="frontend"><h2>Frontend</h2></a>
 В качестве клиентского приложения используется файл: /fronend/calc_front.html
+
+![Внешний вид приложения](docs/images/screen_calculator.jpg)
+
+
 Страница содержит три вкладки:
 
 ### Калькулятор
