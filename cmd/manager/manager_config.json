@@ -11,9 +11,9 @@
     "mainLoopDelaySeconds": 3,
     "addnigLoopDelaySeconds": 10,
     "maxLenghtManagerQueue": 10,
-    "maxDurationForTask": 100,
+    "maxDurationForTask": 5000,
     "makeRPNInManager": true,
-    "maxManagersWorkers": 3,
+    "maxManagersWorkers": 2,
     "calcdaemonEndpoint": "/calcdaemon",
     "calcDaemonServerAddress": "http://127.0.0.1:8071"
 }

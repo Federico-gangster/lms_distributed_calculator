@@ -4,10 +4,10 @@
     "serverAddress": "127.0.0.1:8071",
     "managerEndpoint": "/calcmanager",
     "managerServerAddress": "http://127.0.0.1:8091",
-    "maxLenghtCalcQueue": 10,
+    "maxLenghtCalcQueue": 5,
     "processingDelaySeconds": 1,
-    "maxGoroutinesInCalcProcess": 10,
-    "additionalDelayInCalculationOperationSeconds": 20,
+    "maxGoroutinesInCalcProcess": 5,
+    "additionalDelayInCalculationOperationSeconds": 1,
     "mainLoopDelaySeconds": 2,
     "auxiliaryLoopDelaySeconds": 3,
     "sendIntermediateRPNExpressionToManager": true
