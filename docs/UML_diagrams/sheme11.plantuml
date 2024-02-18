@@ -3,8 +3,8 @@ actor User
 participant "Browser with app" as Browser #LightCyan
 
 box "Dispatcher"
-participant "Dispatcher core" as Dispatcher
-participant "Local expression cache" as LocalCache
+participant "Dispatcher" as Dispatcher
+participant "Local Request ID cache" as LocalCache
 end box
 
 participant Storage
@@ -23,25 +23,37 @@ alt #Pink Запрос по неверному адресу
   Browser--> User: Отображение статуса
   note over User: Корректирует запрос 
 end  
-alt #Pink Запрос не корректен\выражение не корректно 
+alt #Pink Запрос не корректен, выражение не корректно(или отсутствует Request ID) 
   Dispatcher--> Browser: Code 400 Bad Request\nCode400 Invalid expression\nCode 400 Invalid arithmetic expression
   Browser--> User: Отображение статуса
   note over User: Корректирует выражение 
 end
 
-Dispatcher -> LocalCache: Поиск выражения(в кэше) 
+Dispatcher -> LocalCache: Поиск задания в кэше по request_id 
 LocalCache --> Dispatcher: Результат
-alt #LightGreen  Найдена(в кэше) запись и task_id
+alt #LightGreen  Задание найдено(в кэше)
   Dispatcher--> Browser: Code 200 \n+ task_id
   Browser--> User: Отображение статуса
   note over User: Работает через Get(task_id) 
 end
 
-Dispatcher -> Storage: Добавление выражения \nв очередь на вычисление
-Storage --> Dispatcher: Результат добавления
+
+Dispatcher -> Storage: Поиск задания в Storage по request_id 
+Storage --> Dispatcher: Результат
+alt #LightGreen  Задание найдено(в БД)
+  Dispatcher -> LocalCache: Добавление в кэш \nвыражения и task_id 
+  LocalCache --> Dispatcher: 
+  Dispatcher--> Browser: Code 200 \n+ task_id
+  Browser--> User: Отображение статуса
+  note over User: Работает через Get(task_id) 
+end
+
+
+Dispatcher -> Storage: Регистрация выражения \nв на вычисление
+Storage --> Dispatcher: Результат регистрации
 note over Dispatcher, Storage
     В случае успеха, возвращается 
-    идентификатор записи в очереди
+    идентификатор записи task_id
 end note
 
 alt #Pink Ошибка добавления выражения в очередь на вычисление
@@ -52,12 +64,8 @@ end
 
 Dispatcher -> LocalCache: Добавление в кэш \nвыражения и task_id 
 LocalCache --> Dispatcher: 
-
-alt #LightGreen Выражение уже ранее было добавлено в очередь на вычисление 
-  Dispatcher--> Browser: Code 200 \n+ task_id
-  Browser--> User: Отображение статуса
-  note over User: Работает через Get(task_id)   
-else #LightGreen Выражение успешно добавлено в очередь на вычисление 
+   
+alt #LightGreen Выражение успешно добавлено в очередь на вычисление 
   Dispatcher--> Browser: Code 200 \n+ task_id
   Browser--> User: Отображение статуса
   note over User: Работает через Get(task_id)
