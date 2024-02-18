@@ -1,0 +1,15 @@
+{
+    "calcdaemonEndpoint": "/calcdaemon",
+    "updateConfigEndpoint": "/updateConfig",
+    "serverAddress": "127.0.0.1:8071",
+    "managerEndpoint": "/calcmanager",
+    "managerServerAddress": "http://127.0.0.1:8091",
+    "maxLenghtCalcQueue": 10,
+    "processingDelaySeconds": 1,
+    "maxGoroutinesInCalcProcess": 10,
+    "additionalDelayInCalculationOperationSeconds": 20,
+    "mainLoopDelaySeconds": 2,
+    "auxiliaryLoopDelaySeconds": 3,
+    "sendIntermediateRPNExpressionToManager": true,
+    "DeleteFinishedTasksAfterTransferringToManager": true
+}

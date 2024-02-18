@@ -1,0 +1,64 @@
+@startuml
+actor User
+participant "Browser with app" as Browser #LightCyan
+
+box "Dispatcher"
+participant "Dispatcher core" as Dispatcher
+participant "Local result cache" as LocalCache
+end box
+
+participant Storage
+
+
+autonumber 10 10 "<b>[000]"
+
+
+== Получение результа вычисления ==
+
+Browser -> Dispatcher: GET запрос на получение \nрезультата вычисления \nзадачи по record_token 
+
+Dispatcher -> Dispatcher: Валидация запроса
+alt #Pink Запрос не валиден
+  Dispatcher--> Browser: Code 400 Empty or missing task_id
+  Browser--> User: Отображение статуса
+  note over User: Корректирует запрос 
+end
+
+Dispatcher -> LocalCache: Поиск завершенного результата
+LocalCache --> Dispatcher: Результат поиска
+alt #LightGreen  Найден(в кэше) готовый результат для task_id
+  Dispatcher--> Browser: Code 200 \n+ result
+  Browser--> User: Отображение статуса и результата
+  note over User: Конец
+end
+
+Dispatcher -> Storage: Получение результата \nвычисления задачи \nпо task_id  
+Storage --> Dispatcher: Результат вычисления
+
+
+alt #Pink Ошибка получения результата вычисления
+  Dispatcher--> Browser: Code 500 Internal Server Error
+  Browser--> User: Отображение статуса
+  note over User: Пробует позже
+end  
+
+alt #Pink Запись с данным record_token не найдена
+    Dispatcher--> Browser: Code 500 
+    Browser--> User: Отображение статуса
+    note over User: Корректирует запрос  
+end
+
+alt Вычисление не завершено(или не начато)
+    Dispatcher--> Browser: Code 200 \n+ Status={Waiting или In progress}\n+ result="" 
+    Browser--> User: Отображение статуса
+    note over User: Пробует позже
+else #LightGreen Выражение вычислено
+  Dispatcher -> LocalCache: Добавление в кэш \nрезультата по task_id 
+  LocalCache --> Dispatcher: 
+
+  Dispatcher--> Browser: Code 200 \n+ Status=Completed\n+ result=значение 
+  Browser--> User: Отображение результата
+   note over User: Конец
+end
+
+@enduml

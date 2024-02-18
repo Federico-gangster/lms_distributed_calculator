@@ -1,0 +1,20 @@
+@startuml
+' actor User
+' participant "Browser with app" as Browser #LightCyan
+' participant Dispatcher
+participant Storage
+participant "Threads manager" as ThreadsManager
+
+box "Pool of calculation threads" #LightGreen
+participant thread_1 #red
+participant thread_2
+participant thread_3 #red
+end box
+autonumber 10 10 "<b>[000]"
+
+== Обработка задач из очереди на вычисление ==
+
+
+
+
+@enduml

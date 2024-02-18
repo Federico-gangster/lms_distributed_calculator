@@ -1,0 +1,66 @@
+@startuml
+actor User
+participant "Browser with app" as Browser #LightCyan
+
+box "Dispatcher"
+participant "Dispatcher core" as Dispatcher
+participant "Local expression cache" as LocalCache
+end box
+
+participant Storage
+
+
+autonumber 10 10 "<b>[000]"
+
+== Постановка пользователем задачи на вычисление ==
+
+User -> Browser: Вводит выражение \nдля вычисления
+Browser -> Dispatcher: POST выражение \nдля вычисления
+
+Dispatcher -> Dispatcher: Валидация запроса \nи выражения
+alt #Pink Запрос по неверному адресу
+  Dispatcher--> Browser: Code 404 page not found
+  Browser--> User: Отображение статуса
+  note over User: Корректирует запрос 
+end  
+alt #Pink Запрос не корректен\выражение не корректно 
+  Dispatcher--> Browser: Code 400 Bad Request\nCode400 Invalid expression\nCode 400 Invalid arithmetic expression
+  Browser--> User: Отображение статуса
+  note over User: Корректирует выражение 
+end
+
+Dispatcher -> LocalCache: Поиск выражения(в кэше) 
+LocalCache --> Dispatcher: Результат
+alt #LightGreen  Найдена(в кэше) запись и task_id
+  Dispatcher--> Browser: Code 200 \n+ task_id
+  Browser--> User: Отображение статуса
+  note over User: Работает через Get(task_id) 
+end
+
+Dispatcher -> Storage: Добавление выражения \nв очередь на вычисление
+Storage --> Dispatcher: Результат добавления
+note over Dispatcher, Storage
+    В случае успеха, возвращается 
+    идентификатор записи в очереди
+end note
+
+alt #Pink Ошибка добавления выражения в очередь на вычисление
+  Dispatcher--> Browser: Code 500 Internal Server Error
+  Browser--> User: Отображение статуса
+  note over User: Пробует позже 
+end  
+
+Dispatcher -> LocalCache: Добавление в кэш \nвыражения и task_id 
+LocalCache --> Dispatcher: 
+
+alt #LightGreen Выражение уже ранее было добавлено в очередь на вычисление 
+  Dispatcher--> Browser: Code 200 \n+ task_id
+  Browser--> User: Отображение статуса
+  note over User: Работает через Get(task_id)   
+else #LightGreen Выражение успешно добавлено в очередь на вычисление 
+  Dispatcher--> Browser: Code 200 \n+ task_id
+  Browser--> User: Отображение статуса
+  note over User: Работает через Get(task_id)
+end
+
+@enduml

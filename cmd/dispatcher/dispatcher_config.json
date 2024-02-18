@@ -1,0 +1,17 @@
+{
+    "dispatcherEndpoint": "/expression",
+    "serverAddress": "127.0.0.1:8081",
+    "maxLenghtRequestId": 50,
+    "usePrepareValidation": true,
+    "prepareValidationRegex": "^[0-9+\\-*/().^\\s]+$",
+    "maxLenghtExpression": 255,
+    "useLocalRequestIdCache": true,
+    "useLocalResultCache": true,
+    "dbConnectionConfig": {
+        "host": "127.0.0.1",
+        "port": 5432,
+        "user": "root",
+        "password": "root",
+        "dbname": "calcDB"
+    }
+}

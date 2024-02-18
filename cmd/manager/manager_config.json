@@ -1,0 +1,19 @@
+{
+    "managerEndpoint": "/calcmanager",
+    "serverAddress": "127.0.0.1:8091",
+    "dbConnectionConfig": {
+        "host": "127.0.0.1",
+        "port": 5432,
+        "user": "root",
+        "password": "root",
+        "dbname": "calcDB"
+    },
+    "mainLoopDelaySeconds": 3,
+    "addnigLoopDelaySeconds": 10,
+    "maxLenghtManagerQueue": 10,
+    "maxDurationForTask": 100,
+    "makeRPNInManager": true,
+    "maxManagersWorkers": 3,
+    "calcdaemonEndpoint": "/calcdaemon",
+    "calcDaemonServerAddress": "http://127.0.0.1:8071"
+}

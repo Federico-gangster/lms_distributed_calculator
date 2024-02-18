@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  postgres:
+    container_name: db_expressions
+    image: postgres:16.1-alpine3.19
+    environment:
+      - POSTGRES_DB=calcDB
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=root
+      - PGDATA=/var/lib/postgresql/data/calcDB
+    volumes:
+      - /home/mike/my_golang/ya_lms_expression_calc/postgre_data/:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: noemail@noemail.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"       
+    
+    
+
+
