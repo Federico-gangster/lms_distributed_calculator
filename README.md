@@ -21,9 +21,10 @@
     - [Запуск Демона](#daemon-start)
     - [Взаимодействие с Менеджером](#daemon-manager)
     - [Взаимодействие с Frontend](#daemon-frontend)
-
-
 - [Frontend](#frontend)
+
+- [Подготовка и запуск проекта](#prepare_and_start)
+
 - [Todo](#todo)
 
 <a name="solution-discriber"><h2>Общее описание решения</h2></a>
@@ -661,6 +662,47 @@ curl -X POST -H "Content-Type: application/json" -d '{
 * uptime: 465 - аптайм текущего экземпляра Демона(сколько прошло секунд с момента его последнего запуска, указанного в last_run_time)
 
 **При вводе выражений, обратите внимание на пункт [Вычисление выражений](#daemon-calc)**
+
+<a name="prepare_and_start"><h2>Подготовка и запуск проекта</h2></a>
+Предполагается, что на вашем компьютере уже установлен GO
+
+1. Если у вас на компьютере установлена СУБД PostgreSQL, можно использовать её, а если нет, то рекомендуется использовать(т.е. установить) Docker.
+Инициализация Хранилища, в т.ч. из docker образа описана в разделе - [Настройка Хранилища](#storage-start)  
+(в вашем хранилище необходимо будет создать таблицы по приведенным скриптам)
+
+2. Клонируйте проект на свой компьютер
+```
+git clone https://github.com/Federico-gangster/lms_distributed_calculator.git
+
+```
+Если вы хотите клонировать проект в определенный каталог, вы можете добавить имя каталога после URL, как в следующем примере:
+```
+git clone https://github.com/Federico-gangster/lms_distributed_calculator.git my_project
+
+```
+3. Поскольку Диспетчер, Менеджер и Демон(вычислитель) используют настроечные файлы, необходимо обеспечить, что для каждой из этих компонент в её области видимости доступен файл с настройками. Для обеспечения этого, следует запускать каждую из компонент из того каталога, где она расположена(вместе со своим файлом настроек), т.е.:
+```
+Запуск Диспетчера:
+путь к проекту/ya_lms_expression_calc/cmd/dispatcher$ go run main.go
+
+Запуск Менеджера:
+путь к проекту/ya_lms_expression_calc/cmd/manager$ go run main.go
+
+Запуск Демона(выычислителя):
+путь к проекту/ya_lms_expression_calc/cmd/calc_daemon$ go run main.go
+
+```
+Ситуация справедлива как для Windows, так и для Linux систем.
+
+4. Если ваши настройки Диспетчера, Менеджера или Демона(вычислителя) отличаются от моих, то для корректной работы Frondend, вам необходимо изменить "захардкоженные" значения соответствующих переменных в файле calc_front.html
+
+```
+ // Глобальные переменные
+ var globalServerAddress = "http://localhost:8081/expression";
+ var ManagerServerAddress = "http://localhost:8091/calcmanager";
+ var DaemonStatisticsServerAddress = "http://localhost:8071/calcdaemon";
+ var DaemonSettingsServerAddress = "http://localhost:8071/updateConfig";
+```
 
 <a name="todo"><h2>Todo</h2></a>
 
