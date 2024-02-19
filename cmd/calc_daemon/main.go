@@ -436,6 +436,11 @@ func evaluateRPN(tokens []string, task *Task, config Config) (float64, error) {
 				}
 			}
 		}
+	} else {
+		if len(currSlice) > 1 {
+			// Тройки закончены, но тоены ещё нет - это ошибка в записи выражения
+			return 0, errors.New("error parsing final result")
+		}
 	}
 
 	if len(currSlice) == 1 {
