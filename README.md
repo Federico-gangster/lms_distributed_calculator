@@ -231,7 +231,14 @@ COMMENT ON COLUMN calc_expr."condition" IS 'Состояние процесса 
 <a name="storage-start"><h3>Настройка хранилища</h3></a>
 В проекте использован докер-образ данного сервера СУБД - см.настройки файла docker-compose.yaml. Для доступа к настройкам и управлению СУБД использовался образ pgadmin, поэтому он также прописан в docker-compose.yaml.
 
-При использовании docker-compose, вам необходимо скачать и инициализировать образы и настройки из файла docker-compose.yaml.
+При использовании docker-compose, вам необходимо скачать и инициализировать образы и настройки из файла docker-compose.yaml. 
+Не забудьте скорректировать монтируемый каталог для файлов базы данных(параметр "volumes") - значение слева до символа двоеточия:
+```
+volumes:
+      - /home/mike/my_golang/ya_lms_expression_calc/postgre_data/:/var/lib/postgresql/data
+```
+
+Инициализация и скачивание образов выполняется командой:
 ```
 sudo docker compose up --build
 ```
