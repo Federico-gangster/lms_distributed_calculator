@@ -31,8 +31,8 @@
 
 ### Исходная задача
 - [Скриншот задания №1](docs/the_formulation_of_the_task/zadacha_screen1.jpg)
-- [Скриншот задания №1](docs/the_formulation_of_the_task/zadacha_screen2.jpg)
-- [Перечень требований №1](docs/the_formulation_of_the_task/requirements1.txt)
+- [Скриншот задания №2](docs/the_formulation_of_the_task/zadacha_screen2.jpg)
+- [Перечень требований](docs/the_formulation_of_the_task/requirements1.txt)
 
 
 ##
