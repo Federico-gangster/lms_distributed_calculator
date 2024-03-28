@@ -242,7 +242,7 @@ func processPost(w http.ResponseWriter, r *http.Request, config Config, db *sql.
 	}
 
 	if taskID != "" {
-		// Наши таску, возвращаем клиенту taskID(обеспечиваем идемпотентность)
+		// Нашли таску, возвращаем клиенту taskID(обеспечиваем идемпотентность)
 		// returnTaskID(w, taskID)
 		returnTaskIdToClient(w, taskID)
 		return
